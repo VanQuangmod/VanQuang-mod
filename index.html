@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101116">
+<title>VanQuang ⚡ | FF Outfit Studio</title>
+<style>
+:root{--bg:#0d0e13;--panel:#171922;--panel2:#202330;--line:#303443;--text:#f4f5fb;--muted:#a5a9ba;--accent:#7c5cff;--accent2:#30d9e8;--green:#9cff57}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#191b2b 0%,var(--bg) 58%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:#101116ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{font-weight:900;letter-spacing:.5px;font-size:19px}.brand span{color:var(--accent2)}.tag{font-size:10px;color:var(--muted);letter-spacing:1.4px;margin-top:3px}
+.pill{border:1px solid #3b4260;border-radius:999px;padding:7px 10px;color:#d9d5ff;font-size:11px;white-space:nowrap}
+main{width:min(1120px,100%);margin:auto;padding:16px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px}
+.panel{background:linear-gradient(160deg,#1a1c27,#14151c);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 16px 45px #0003}
+.panelhead{display:flex;justify-content:space-between;align-items:center;padding:15px 16px;border-bottom:1px solid var(--line)}.panelhead h2{font-size:14px;margin:0}.small{font-size:11px;color:var(--muted)}
+.stage{position:relative;min-height:420px;background:radial-gradient(ellipse at 50% 35%,#353958 0%,#1a1c2a 38%,#101117 78%);overflow:hidden}
+#viewer{position:absolute;inset:0;width:100%;height:100%;min-height:420px;display:block;touch-action:pan-y}
+.stagebadge{position:absolute;top:14px;left:14px;z-index:2;border:1px solid #ffffff22;background:#11131ccc;border-radius:10px;padding:8px 10px;font-size:10px;color:#d8ddf5}
+.stagefoot{position:absolute;bottom:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.stagefoot span{font-size:10px;color:#c0c4d7;background:#101116b8;padding:7px 9px;border-radius:8px}
+.controls{display:flex;gap:8px;padding:12px;flex-wrap:wrap;border-top:1px solid var(--line)}
+button{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:11px 13px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer}
+button:active{transform:scale(.98)}button.primary{background:linear-gradient(110deg,var(--accent),#5844cf);border-color:#8270ff}button.cyan{border-color:#246d77;color:#8cf4ff;background:#13262c}
+.controls button{flex:1}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:12px 12px 0}
+.tab{padding:10px 4px;font-size:11px;color:var(--muted)}.tab.active{background:#332a60;border-color:#7865ff;color:white}
+.form{padding:12px 14px 16px}.group{margin:0 0 13px}.group label{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#d7daea;margin-bottom:7px}.group label small{font-size:10px;color:var(--muted)}
+select,input[type=text]{width:100%;border:1px solid #34394b;border-radius:10px;background:#101219;color:var(--text);padding:12px;font-size:13px;outline:none}
+select:focus,input:focus{border-color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.actions .primary{grid-column:1/-1}
+.notice{margin:0 14px 14px;border:1px solid #48402b;background:#282316;color:#e6d9a8;padding:11px;border-radius:10px;font-size:11px;line-height:1.5}
+footer{text-align:center;color:#777e92;font-size:10px;padding:8px 16px 24px}
+.status{font-size:11px;color:#8df0a7;min-height:16px;margin-top:9px}
+@media(max-width:760px){main{grid-template-columns:1fr;padding:10px;gap:12px}.stage,#viewer{min-height:370px}.stage{min-height:370px}.panelhead{padding:13px}.brand{font-size:17px}header{padding:12px}.rightpanel{order:2}.leftpanel{order:1}}
+@media(min-width:761px){.stage,#viewer{min-height:570px}.stage{min-height:570px}}
+</style>
+</head>
+<body>
+<header>
+ <div><div class="brand">VanQuang <span>⚡</span></div><div class="tag">FF OUTFIT STUDIO · TEST BUILD</div></div>
+ <div class="pill">ANDROID READY · BETA</div>
+</header>
+<main>
+ <section class="panel leftpanel">
+  <div class="panelhead"><h2>NHÂN VẬT XEM TRƯỚC</h2><span class="small">Kéo để xoay</span></div>
+  <div class="stage">
+   <div class="stagebadge">● 3D PREVIEW <span style="color:#9cff57">● DEMO</span></div>
+   <canvas id="viewer" aria-label="Khung xem trước nhân vật 3D"></canvas>
+   <div class="stagefoot"><span>Vuốt ngang để xoay · Chụm để phóng to nếu hỗ trợ</span><span id="angle">0°</span></div>
+  </div>
+  <div class="controls">
+   <button id="rotateLeft">↶ Xoay trái</button><button id="rotateRight">Xoay phải ↷</button><button id="resetView">◎ Chính diện</button>
+  </div>
+ </section>
+ <section class="panel rightpanel">
+  <div class="panelhead"><h2>TỦ ĐỒ CỦA BẠN</h2><span class="small" id="itemCount">8 mục</span></div>
+  <div class="tabs"><button class="tab active" data-tab="outfit">Trang phục</button><button class="tab" data-tab="style">Phong cách</button><button class="tab" data-tab="export">Xuất file</button></div>
+  <div class="form" id="outfitPane">
+   <div class="group"><label for="hair">Tóc <small>HAIR</small></label><select id="hair"><option value="Tóc đen">Tóc đen</option><option value="Tóc bạc">Tóc bạc</option><option value="Tóc xanh">Tóc xanh</option><option value="Tóc tím">Tóc tím</option></select></div>
+   <div class="group"><label for="mask">Mặt nạ <small>MASK</small></label><select id="mask"><option value="Không">Không</option><option value="Mặt nạ đen">Mặt nạ đen</option><option value="Mặt nạ neon">Mặt nạ neon</option></select></div>
+   <div class="group"><label for="shirt">Áo <small>TOP</small></label><select id="shirt"><option value="Áo khoác đen">Áo khoác đen</option><option value="Áo xanh neon">Áo xanh neon</option><option value="Áo tím">Áo tím</option><option value="Áo trắng">Áo trắng</option></select></div>
+   <div class="grid2">
+    <div class="group"><label for="pants">Quần <small>PANTS</small></label><select id="pants"><option value="Quần đen">Quần đen</option><option value="Quần trắng">Quần trắng</option><option value="Quần tím">Quần tím</option></select></div>
+    <div class="group"><label for="shoes">Giày <small>SHOES</small></label><select id="shoes"><option value="Giày đen">Giày đen</option><option value="Giày neon">Giày neon</option><option value="Giày trắng">Giày trắng</option></select></div>
+   </div>
+   <div class="group"><label for="bundle">Gói đồ <small>BUNDLE</small></label><select id="bundle"><option value="Không">Không</option><option value="Cyber">Cyber</option><option value="Chiến binh">Chiến binh</option></select></div>
+   <div class="group"><label for="pose">Dáng đứng <small>POSE</small></label><select id="pose"><option value="Mặc định">Mặc định</option><option value="Tự tin">Tự tin</option><option value="Sẵn sàng">Sẵn sàng</option></select></div>
+   <div class="group"><label for="action">Hành động <small>EMOTE</small></label><select id="action"><option value="Không">Không</option><option value="Chào">Chào</option><option value="Nhảy">Nhảy</option></select></div>
+   <div class="actions"><button class="primary" id="randomize">✦ PHỐI NGẪU NHIÊN</button><button id="resetAll">Đặt lại</button><button id="saveLocal">Lưu phối đồ</button></div>
+   <div class="status" id="status" aria-live="polite"></div>
+  </div>
+  <div class="form" id="stylePane" hidden>
+   <div class="group"><label for="glow">Màu ánh sáng</label><select id="glow"><option value="#7c5cff">Tím neon</option><option value="#30d9e8">Xanh cyan</option><option value="#9cff57">Xanh lá</option><option value="#ff5e9c">Hồng</option></select></div>
+   <div class="group"><label for="background">Phông nền</label><select id="background"><option value="night">Đêm tương lai</option><option value="blue">Xanh lạnh</option><option value="purple">Tím cyber</option></select></div>
+   <button class="primary" id="applyStyle" style="width:100%">Áp dụng phong cách</button>
+   <p class="small">Các lựa chọn này chỉ đổi màu trong bản xem trước demo.</p>
+  </div>
+  <div class="form" id="exportPane" hidden>
+   <div class="group"><label for="filename">Tên file xuất</label><input id="filename" type="text" value="VanQuang-Outfit" maxlength="40"></div>
+   <p class="small">File JSON lưu lựa chọn phối đồ để nhập lại hoặc dùng làm dữ liệu cho dự án. Đây không phải file mod có thể cài trực tiếp vào Free Fire.</p>
+   <div class="actions"><button class="primary" id="exportJson">⇩ XUẤT CẤU HÌNH JSON</button><button id="importBtn">Nhập JSON</button><button id="copyJson">Sao chép JSON</button><button id="clearStatus">Xóa thông báo</button></div>
+   <input id="importFile" type="file" accept=".json,application/json" hidden>
+   <div class="status" id="exportStatus" aria-live="polite"></div>
+   <pre id="jsonPreview" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#101219;border:1px solid #303443;border-radius:10px;padding:10px;font-size:10px;color:#cdd2e8;max-height:180px;overflow:auto"></pre>
+  </div>
+  <div class="notice">⚠️ Đây là trình phối đồ demo độc lập. Nhân vật 3D được dựng bằng hình khối mẫu, không phải mô hình chính thức của Free Fire. Xuất JSON chỉ lưu cấu hình, không thay đổi dữ liệu game.</div>
+ </section>
+</main>
+<footer>VanQuang ⚡ · Fan-made outfit preview · Không liên kết với Garena</footer>
+<script type="module">
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+const canvas=document.querySelector('#viewer');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(35,canvas.clientWidth/canvas.clientHeight,0.1,100);
+camera.position.set(0,1.55,6.4);
+scene.add(new THREE.HemisphereLight(0xbacaff,0x20182d,2.0));
+const keyLight=new THREE.DirectionalLight(0xffffff,2.6);keyLight.position.set(3,5,5);scene.add(keyLight);
+const rim=new THREE.PointLight(0x7c5cff,24,12);rim.position.set(-3,2,1);scene.add(rim);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(2.1,64),new THREE.MeshBasicMaterial({color:0x22243a,transparent:true,opacity:.7}));
+floor.rotation.x=-Math.PI/2;floor.position.y=-1.48;scene.add(floor);
+const grid=new THREE.GridHelper(8,24,0x45406c,0x292b40);grid.position.y=-1.46;scene.add(grid);
+const character=new THREE.Group();scene.add(character);
+function mat(color,metalness=0,roughness=.6){return new THREE.MeshStandardMaterial({color,metalness,roughness});}
+const skin=mat('#c88f70'),dark=mat('#171923',.15),hairMat=mat('#171923'),shirtMat=mat('#24263b',.25),pantsMat=mat('#252735',.1),shoeMat=mat('#11131a',.2),neonMat=mat('#7c5cff',.2,.35);
+function part(geo,material,x,y,z,group=character){const m=new THREE.Mesh(geo,material);m.position.set(x,y,z);group.add(m);return m;}
+const torsoGroup=new THREE.Group();character.add(torsoGroup);
+part(new THREE.CapsuleGeometry(.38,.64,6,12),shirtMat,0,.12,0,torsoGroup).scale.set(1,1,0.7);
+part(new THREE.SphereGeometry(.24,20,16),skin,0,.91,0);
+const hair=part(new THREE.SphereGeometry(.255,20,14),hairMat,0,1.04,-.015);hair.scale.set(1.02,.55,1);
+const legs=[];
+for(const x of [-.19,.19]){
+ const leg=part(new THREE.CapsuleGeometry(.13,.65,5,10),pantsMat,x,-.63,0);legs.push(leg);
+ part(new THREE.BoxGeometry(.25,.14,.4),shoeMat,x,-1.19,.09);
+}
+const arms=[];
+for(const x of [-.49,.49]){
+ const arm=part(new THREE.CapsuleGeometry(.105,.59,5,10),shirtMat,x,.16,0);arm.rotation.z=x<0?-.13:.13;arms.push(arm);
+ part(new THREE.SphereGeometry(.105,12,10),skin,x,-.22,.01);
+}
+const neck=part(new THREE.CylinderGeometry(.09,.1,.16,12),skin,0,.68,0);
+const visor=part(new THREE.BoxGeometry(.34,.09,.12),neonMat,0,.92,.205);visor.visible=false;
+const chestStripe=part(new THREE.BoxGeometry(.07,.55,.025),neonMat,.13,.15,.255);
+const belt=part(new THREE.TorusGeometry(.27,.035,8,24),dark,0,-.29,0);belt.rotation.x=Math.PI/2;
+const shoulderL=part(new THREE.SphereGeometry(.15,12,10),neonMat,-.39,.39,0);
+const shoulderR=part(new THREE.SphereGeometry(.15,12,10),neonMat,.39,.39,0);
+const mats={skin,dark,hairMat,shirtMat,pantsMat,shoeMat,neonMat};
+function hexColor(s){return new THREE.Color(s)}
+function applyLook(){
+ const hairName=document.querySelector('#hair').value;
+ hairMat.color.set(hairName==='Tóc bạc'?'#d6d8e3':hairName==='Tóc xanh'?'#22cfe2':hairName==='Tóc tím'?'#a66bff':'#171923');
+ const shirt=document.querySelector('#shirt').value;
+ shirtMat.color.set(shirt==='Áo xanh neon'?'#174d50':shirt==='Áo tím'?'#3d245b':shirt==='Áo trắng'?'#d8d9e0':'#24263b');
+ const pants=document.querySelector('#pants').value;
+ pantsMat.color.set(pants==='Quần trắng'?'#d9dbe4':pants==='Quần tím'?'#3d245b':'#252735');
+ const shoes=document.querySelector('#shoes').value;
+ shoeMat.color.set(shoes==='Giày neon'?'#3ad7e4':shoes==='Giày trắng'?'#e8eaf2':'#11131a');
+ const mask=document.querySelector('#mask').value;
+ visor.visible=mask!=='Không';visor.material.color.set(mask==='Mặt nạ đen'?'#15151b':'#30d9e8');
+ const bundle=document.querySelector('#bundle').value;
+ neonMat.color.set(bundle==='Cyber'?'#30d9e8':bundle==='Chiến binh'?'#ff5e9c':document.querySelector('#glow').value);
+ chestStripe.visible=bundle!=='Không';shoulderL.visible=bundle!=='Không';shoulderR.visible=bundle!=='Không';
+ const pose=document.querySelector('#pose').value;
+ arms[0].rotation.z=pose==='Tự tin'?-.6:pose==='Sẵn sàng'?-.35:-.13;
+ arms[1].rotation.z=pose==='Tự tin'?.6:pose==='Sẵn sàng'?.35:.13;
+ const action=document.querySelector('#action').value;
+ torsoGroup.rotation.y=action==='Chào'?-.08:0;
+ document.querySelector('#status').textContent='Đã cập nhật bản xem trước demo.';
+ updateJsonPreview();
+}
+let yaw=0,dragging=false,lastX=0;
+canvas.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(!dragging)return;yaw+=(e.clientX-lastX)*.012;lastX=e.clientX;character.rotation.y=yaw;document.querySelector('#angle').textContent=Math.round(((yaw*180/Math.PI)%360+360)%360)+'°'});
+canvas.addEventListener('pointerup',()=>dragging=false);canvas.addEventListener('pointercancel',()=>dragging=false);
+document.querySelector('#rotateLeft').onclick=()=>{yaw-=.35;character.rotation.y=yaw;updateAngle()};
+document.querySelector('#rotateRight').onclick=()=>{yaw+=.35;character.rotation.y=yaw;updateAngle()};
+document.querySelector('#resetView').onclick=()=>{yaw=0;character.rotation.y=0;updateAngle()};
+function updateAngle(){document.querySelector('#angle').textContent=Math.round(((yaw*180/Math.PI)%360+360)%360)+'°'}
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(canvas);
+function animate(){requestAnimationFrame(animate);renderer.render(scene,camera)}animate();
+
+const ids=['hair','mask','shirt','pants','shoes','bundle','pose','action'];
+function getConfig(){const outfit={};ids.forEach(id=>outfit[id]=document.getElementById(id).value);return {app:'VanQuang-FF-Test',formatVersion:1,createdAt:new Date().toISOString(),type:'outfit-preview-config',outfit,style:{glow:document.querySelector('#glow').value,background:document.querySelector('#background').value}}}
+function updateJsonPreview(){const el=document.querySelector('#jsonPreview');if(el)el.textContent=JSON.stringify(getConfig(),null,2)}
+function safeName(s){return (s||'VanQuang-Outfit').trim().replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'')||'VanQuang-Outfit'}
+document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>{applyLook();}));
+document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
+ document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b===btn));
+ ['outfit','style','export'].forEach(name=>document.getElementById(name+'Pane').hidden=name!==btn.dataset.tab);
+ updateJsonPreview();
+});
+document.querySelector('#randomize').onclick=()=>{ids.forEach(id=>{const s=document.getElementById(id);s.selectedIndex=Math.floor(Math.random()*s.options.length)});applyLook()};
+document.querySelector('#resetAll').onclick=()=>{document.querySelector('#hair').selectedIndex=0;document.querySelector('#mask').selectedIndex=0;document.querySelector('#shirt').selectedIndex=0;document.querySelector('#pants').selectedIndex=0;document.querySelector('#shoes').selectedIndex=0;document.querySelector('#bundle').selectedIndex=0;document.querySelector('#pose').selectedIndex=0;document.querySelector('#action').selectedIndex=0;applyLook()};
+document.querySelector('#saveLocal').onclick=()=>{try{localStorage.setItem('vq-outfit',JSON.stringify(getConfig()));document.querySelector('#status').textContent='Đã lưu phối đồ trên trình duyệt này.'}catch(e){document.querySelector('#status').textContent='Không thể lưu trên trình duyệt này.'}};
+document.querySelector('#exportJson').onclick=()=>{const blob=new Blob([JSON.stringify(getConfig(),null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=safeName(document.querySelector('#filename').value)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);document.querySelector('#exportStatus').textContent='Đã tạo file JSON cấu hình phối đồ.'};
+document.querySelector('#copyJson').onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(getConfig(),null,2));document.querySelector('#exportStatus').textContent='Đã sao chép JSON.'}catch(e){document.querySelector('#exportStatus').textContent='Trình duyệt không cho phép sao chép tự động; chọn và sao chép nội dung bên dưới.'}};
+document.querySelector('#importBtn').onclick=()=>document.querySelector('#importFile').click();
+document.querySelector('#importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());const o=data.outfit||data;ids.forEach(id=>{if(o[id]!==undefined){const s=document.getElementById(id);const opt=[...s.options].find(x=>x.value===o[id]);if(opt)s.value=opt.value}});if(data.style?.glow)document.querySelector('#glow').value=data.style.glow;applyLook();document.querySelector('#exportStatus').textContent='Đã nhập cấu hình JSON.'}catch(err){document.querySelector('#exportStatus').textContent='File JSON không hợp lệ.'}e.target.value=''};
+document.querySelector('#applyStyle').onclick=()=>{const c=document.querySelector('#glow').value;rim.color.set(c);neonMat.color.set(c);const bg=document.querySelector('#background').value;document.querySelector('.stage').style.background=bg==='blue'?'radial-gradient(ellipse at 50% 35%,#244154,#101117 78%)':bg==='purple'?'radial-gradient(ellipse at 50% 35%,#44305c,#101117 78%)':'radial-gradient(ellipse at 50% 35%,#353958 0%,#1a1c2a 38%,#101117 78%)';applyLook()};
+document.querySelector('#clearStatus').onclick=()=>document.querySelector('#exportStatus').textContent='';
+updateJsonPreview();applyLook();
+</script>
+</body>
+</html>
