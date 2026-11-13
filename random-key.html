@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090f0b">
+  <title>Mã xác nhận | VanQuang</title>
+  <style>
+    :root{--bg:#080d0a;--panel:#111a14;--green:#24d66b;--green2:#0ba84a;--text:#f1f7f2;--muted:#a5b5aa;--line:#26382c}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;padding:22px 14px;display:grid;place-items:center;background:radial-gradient(ellipse at top,#14291b 0%,var(--bg) 58%);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+    .wrap{width:100%;max-width:480px;position:relative}
+    .close{position:absolute;right:0;top:-10px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;color:#dce8df;text-decoration:none;background:#111a14;font-size:23px}
+    .card{margin-top:30px;padding:30px 22px;border:1px solid #263a2c;border-radius:22px;background:linear-gradient(160deg,rgba(20,32,23,.98),rgba(10,16,12,.98));box-shadow:0 18px 55px #0009;text-align:center}
+    .tag{display:inline-block;padding:7px 11px;border:1px solid #245b36;border-radius:99px;color:#83f5a9;background:#102b19;font-size:11px;font-weight:800;letter-spacing:1.1px}
+    h1{margin:18px 0 8px;font-size:25px}
+    p{color:var(--muted);font-size:13px;line-height:1.6}
+    .code{margin:24px 0 12px;padding:22px 10px;border:1px dashed #3a6648;border-radius:15px;background:#09120c;color:#8af7ac;font-size:clamp(27px,9vw,38px);font-weight:900;letter-spacing:5px;min-height:83px;display:grid;place-items:center}
+    .btn{width:100%;display:block;border:0;border-radius:13px;padding:15px 16px;margin-top:13px;color:#041109;background:linear-gradient(100deg,#36ee7a,#0dbb54);font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 7px 22px #0dbb5433}
+    .secondary{background:linear-gradient(100deg,#36ee7a,#0dbb54)}
+    .status{min-height:18px;margin-top:12px;color:#83f5a9;font-size:12px}
+    .note{margin-top:19px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#0b130e;color:#9eafa3;font-size:11px;line-height:1.6;text-align:left}
+    .footer{text-align:center;margin:15px 0 0;color:#66776b;font-size:11px}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="close" id="closeBtn" href="#" aria-label="Thoát về trang Mod">×</a>
+    <section class="card">
+      <span class="tag">VANQUANG EVENT</span>
+      <h1>MÃ XÁC NHẬN CỦA BẠN</h1>
+      <p>Nhấn nút bên dưới để tạo một mã ngẫu nhiên gồm 8 ký tự.</p>
+      <div class="code" id="codeDisplay" aria-live="polite">---- ----</div>
+      <button class="btn" id="generateBtn" type="button">TẠO MÃ NGẪU NHIÊN</button>
+      <button class="btn secondary" id="copyBtn" type="button">SAO CHÉP MÃ</button>
+      <div class="status" id="status" aria-live="polite"></div>
+      <div class="note">Sau khi sao chép, quay lại trang xác nhận sự kiện và dán mã vào ô nhập. Hãy chụp màn hình trang này để lưu lại mã. Lưu ý: trang HTML chỉ tạo mã ngẫu nhiên ở phía trình duyệt, không lưu mã lên máy chủ và không tự xác minh việc vượt Link4m.</div>
+    </section>
+    <p class="footer">© VanQuang — Sự kiện giải trí cộng đồng</p>
+  </main>
+<script>
+  // THAY ĐƯỜNG DẪN TRANG MOD CHÍNH CỦA BẠN
+  const MOD_HOME_URL = "URL_WEB_MOD_CUA_BAN";
+  document.getElementById("closeBtn").href = MOD_HOME_URL;
+
+  let currentCode = "";
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  function makeCode() {
+    const bytes = new Uint8Array(8);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(bytes);
+    } else {
+      for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+    }
+    let chars = "";
+    for (const byte of bytes) chars += alphabet[byte % alphabet.length];
+    return chars.slice(0, 4) + "-" + chars.slice(4, 8);
+  }
+
+  document.getElementById("generateBtn").addEventListener("click", () => {
+    currentCode = makeCode();
+    document.getElementById("codeDisplay").textContent = currentCode;
+    document.getElementById("status").textContent = "Đã tạo mã mới. Hãy sao chép và lưu ảnh màn hình.";
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    const status = document.getElementById("status");
+    if (!currentCode) {
+      status.textContent = "Bạn cần tạo mã trước khi sao chép.";
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(currentCode);
+      status.textContent = "Đã sao chép mã: " + currentCode;
+    } catch (e) {
+      const temp = document.createElement("textarea");
+      temp.value = currentCode;
+      document.body.appendChild(temp);
+      temp.select();
+      const copied = document.execCommand("copy");
+      temp.remove();
+      status.textContent = copied ? "Đã sao chép mã: " + currentCode : "Không thể tự sao chép. Hãy nhấn giữ mã để sao chép thủ công.";
+    }
+  });
+</script>
+</body>
+</html>
