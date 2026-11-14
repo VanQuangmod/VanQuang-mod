@@ -1,0 +1,8 @@
+VANQUANG EVENT - HUONG DAN
+
+1. Upload index.html de cap nhat website chinh (da them muc SU KIEN).
+2. Upload confirm-event.html va random-key.html cung thu muc voi index.html tren GitHub Pages.
+3. Web 1: https://TEN-USER.github.io/TEN-REPO/confirm-event.html
+4. Web 2: https://TEN-USER.github.io/TEN-REPO/random-key.html
+
+LUU Y KY THUAT: Ban nay la ban tinh nang chay thu tren GitHub Pages, khong co may chu. Ma va moc 12 gio duoc luu bang localStorage tren cung trinh duyet/thiet bi. Vi vay no KHONG phai he thong ma dung chung/bao mat de xac nhan nguoi dung tren nhieu thiet bi. Muon xac minh ma toan cuc va gioi han tao ma 12h cho moi tai khoan/nguoi dung can backend/server.
