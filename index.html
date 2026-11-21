@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VanQuang</title>
+<script>(function(){var t="light";try{t=localStorage.getItem("vq_theme")||"light"}catch(e){}document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light")})();</script>
+<style>
+:root,:root[data-theme="light"]{--bg:#f6f7ff;--card:#ffffff;--ink:#1b2150;--mute:#646c98;--line:#dde1fb;--acc:#5457e0;--btn:#4a5df0;--btn-t:#fff;--note:#e4f6ec;--note-t:#1b6a3c;--shadow:0 6px 20px rgba(80,90,200,.12);--page:radial-gradient(120% 55% at 50% 0%,#e8ebff,rgba(246,247,255,0) 70%),linear-gradient(#fff,#f1f3ff);color-scheme:light}
+:root[data-theme="dark"]{--bg:#060a1c;--card:rgba(20,28,70,.72);--ink:#eef0ff;--mute:#97a0d4;--line:rgba(139,140,255,.3);--acc:#8b8cff;--btn:#3b5bff;--btn-t:#fff;--note:rgba(34,197,94,.14);--note-t:#6ee7a0;--shadow:none;--page:radial-gradient(1.5px 1.5px at 12% 18%,rgba(255,255,255,0.8),transparent),radial-gradient(1px 1px at 84% 12%,rgba(255,255,255,0.7),transparent),radial-gradient(1.5px 1.5px at 72% 38%,rgba(255,255,255,0.6),transparent),radial-gradient(1px 1px at 8% 52%,rgba(255,255,255,0.6),transparent),radial-gradient(1.5px 1.5px at 90% 64%,rgba(255,255,255,0.7),transparent),radial-gradient(1px 1px at 22% 82%,rgba(255,255,255,0.5),transparent),radial-gradient(130% 70% at 50% 0%,#121846,#060a1c 72%);color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{background:var(--bg)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--page);pointer-events:none}
+body{margin:0;background:transparent;color:var(--ink);font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+header{position:relative;text-align:center;padding:22px 16px 10px}
+.logo{font-size:26px;font-weight:800;letter-spacing:.06em;margin:0}
+.logo{display:flex;align-items:center;justify-content:center;gap:12px}.mark{width:64px;height:64px;border-radius:16px;object-fit:cover;background:#fff}.cover{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.post .cover{border-radius:14px}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:6px 12px 14px;border-bottom:1px solid var(--line)}
+nav a{color:var(--ink);text-decoration:none;padding:9px 16px;border-radius:99px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);font-weight:700;font-size:14px}
+@media(max-width:600px){
+  nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding-left:10px;padding-right:10px}
+  nav a{min-width:0;padding:9px 3px;font-size:clamp(9px,2.8vw,12px);text-align:center;white-space:nowrap}
+}
+nav a:hover,nav a:focus-visible{background:var(--card);outline:2px solid var(--acc)}
+main{max-width:680px;margin:0 auto;padding:16px}
+.note{background:var(--note);color:var(--note-t);border-radius:12px;padding:14px 16px;text-align:center;font-size:15px;margin-bottom:18px}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;text-decoration:none;color:inherit}
+.card:focus-visible{outline:2px solid var(--acc)}
+.thumb{aspect-ratio:16/9;display:flex;align-items:flex-end;padding:14px;color:#fff;font-weight:800;font-size:22px;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.card h2{font-size:18px;margin:14px 16px 2px;line-height:1.3}
+.card p{margin:0 16px 14px;color:var(--mute);font-size:14px}
+.post h1{font-size:22px;line-height:1.3;margin:0 0 12px}
+.post .thumb{border-radius:14px}
+.date{color:var(--mute);font-size:14px;margin:12px 0}
+.info{list-style:none;padding:0;margin:0 0 18px}
+.info li{padding:4px 0}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.box h3{margin:0 0 10px;font-size:17px}
+.dl{display:block;text-align:center;background:var(--btn);color:var(--btn-t);text-decoration:none;font-weight:700;padding:14px;border-radius:12px;margin-top:10px}
+.dl:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.back{display:inline-block;margin:6px 0 18px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);padding:10px 16px;border-radius:99px;font-weight:600}
+.sec{font-size:22px;margin:0 0 16px}.hint{color:var(--mute);font-size:14px;text-align:center;margin:12px 0}
+.ask{margin:0 0 12px;font-weight:600}
+.issue{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;font:inherit;cursor:pointer}
+.issue:focus-visible{outline:2px solid var(--acc)}
+.issue b{flex:none;color:var(--acc);font-size:14px}
+.contact{text-align:center;margin-top:16px}
+.zalo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700}
+.zalo svg{width:48px;height:48px;border-radius:12px}
+.menu-btn{position:absolute;top:14px;left:14px;display:flex;align-items:center;justify-content:center;width:48px;height:48px;padding:0;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;cursor:pointer}
+.menu-btn:focus-visible,.drop a:focus-visible,.theme-btn:focus-visible{outline:2px solid var(--acc)}
+.theme-btn{position:absolute;top:14px;right:14px;display:flex;align-items:center;justify-content:center;width:48px;height:48px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:23px;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.home-panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 18px;text-align:center;margin:8px 0 18px}
+.home-panel h1{font-size:24px;margin:0 0 8px}
+.home-panel p{color:var(--mute);margin:0 0 16px}
+.home-notice{margin:0 0 18px}
+.home-notice img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--line)}
+.home-link{display:inline-block;padding:12px 22px;border-radius:12px;background:var(--btn);color:#fff;text-decoration:none;font-weight:700}
+.drop{position:absolute;top:70px;left:14px;z-index:30;min-width:200px;padding:6px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.drop a{display:block;padding:12px 14px;border-radius:10px;color:var(--ink);text-decoration:none;font-weight:600}
+.drop a:hover{background:var(--bg)}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 16px 30px}
+.card,.box,.issue,.home-panel,.back,.menu-btn,.home-notice img{box-shadow:var(--shadow)}
+.tick{flex:none;width:28px;height:28px}
+.join{display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);color:var(--ink);text-decoration:none}
+.join svg{flex:none;width:44px;height:44px;border-radius:12px}
+.join b{display:block;font-size:17px}
+.join span{display:block;color:var(--mute);font-size:14px}
+.join:focus-visible{outline:2px solid var(--acc)}
+</style>
+</head>
+<body>
+<header><button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menuDrop"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+<div class="drop" id="menuDrop" hidden>
+  <a href="#/bao-loi">⚠️ Báo lỗi</a>
+</div><button type="button" class="theme-btn" id="themeBtn" aria-label="Chuyển chế độ sáng tối" title="Chuyển chế độ sáng tối">☀️</button><h1 class="logo"><img class="mark" src="img-logo.jpg" alt=""><span>VanQuang</span><svg class="tick" viewBox="0 0 24 24" role="img" aria-label="Đã xác minh"><g fill="#1d9bf0"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" transform="rotate(45 12 12)"/></g><path d="M8 12.4l2.7 2.7 5.6-5.7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></h1></header>
+<nav aria-label="Menu"><a href="#/trang-chu">TRANG CHỦ</a><a href="#/mod-do">MOD ĐỒ</a><a href="#/sung">MOD SÚNG</a><a href="#/box-share">BOX SHARE MOD</a></nav>
+<main id="app"></main>
+<footer>© VanQuang</footer>
+
+
+<script>
+/* ===== CHỈ CẦN SỬA PHẦN NÀY ĐỂ THÊM BÀI ĐĂNG =====
+   Mỗi bài là 1 khối { ... }. Copy 1 khối rồi đổi nội dung.
+   link: dán đường link tải của bạn vào (thay dấu #) */
+const COVER = "img-cover.jpg";
+const COVERG = "img-coverg.jpg";
+const COVERG2 = "img-coverg2.jpg";
+const COVERG3 = "img-coverg3.jpg";
+const COVERG4 = "img-coverg4.jpg";
+const COVERG5 = "img-coverg5.jpg";
+const COVERG6 = "img-coverg6.jpg";
+const COVERG7 = "img-coverg7.jpg";
+const COVERG8 = "img-coverg8.jpg";
+const COVERG9 = "img-coverg9.jpg";
+const COVERG10 = "img-coverg10.jpg";
+const COVERG11 = "img-coverg11.jpg";
+const COVERG12 = "img-coverg12.jpg";
+const COVERG13 = "img-coverg13.jpg";
+const COVERG14 = "img-coverg14.jpg";
+const COVERG15 = "img-coverg15.jpg";
+const COVERG16 = "img-coverg16.jpg";
+const COVERG17 = "img-coverg17.jpg";
+const POSTS = [
+  {
+    id: "ignis-ffvn-bomber-xanh",
+    title: "MOD SKIN FFVN - Ignis Áo Khoác Bomber Xanh Ngọc Giày Trắng",
+    char: "Nhân vật: Ignis",
+    date: "21/11/2026",
+    img: "img-do1.jpg",
+    versions: ["FFVN"],
+    android: {
+      "FFVN": "https://drive.google.com/file/d/13YE3AtGIsfpbGjAEgG5dtjD67q32Woux/view?usp=drivesdk"
+    },
+    ios: {
+      "FFVN": "https://drive.google.com/file/d/1EEtMKovqFZZnVdARgAwvQxRFw59Sns6p/view?usp=drivesdk"
+    }
+  },
+  {
+    id: "ignis-ffvn-ga-pixel",
+    title: "MOD SKIN FFVN - Ignis Áo Thun Gà Pixel Quần Đen Sọc Vàng",
+    char: "Nhân vật: Ignis",
+    date: "21/11/2026",
+    img: "img-do2.jpg",
+    versions: ["FFVN"],
+    android: {
+      "FFVN": "https://drive.google.com/file/d/1Zr8xpYjPq8ujwbklId5HH9vwRab0HeO3/view?usp=drivesdk"
+    },
+    ios: {
+      "FFVN": "https://drive.google.com/file/d/1P-kYebLMh_ublJfdzRP4F1Ps__DJ-Ldf/view?usp=drivesdk"
+    }
+  },
+  {
+    id: "alok-ffvn-xanh-duong",
+    title: "MOD SKIN FFVN - Alok Thức Tỉnh Áo Họa Tiết Xanh Dương Găng Tay Trắng",
+    char: "Nhân vật: Alok Thức Tỉnh",
+    date: "21/11/2026",
+    img: "img-do3.jpg",
+    versions: ["FFVN"],
+    android: {
+      "FFVN": "https://www.mediafire.com/file/thz7romgzqkddwk/VQ1+ALOK+THỨC+TỈNH+ADR+FFVN+GG47.zip/file"
+    },
+    ios: {
+      "FFVN": "https://www.mediafire.com/file/rceefphtwluwi9c/VQ1+ALOK+THỨC+TỈNH+IOS+FFVN.zip/file"
+    }
+  },
+  {
+    id: "m1887-longtoc-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M1887 Phong Xà Thành M1887 Long Tộc",
+    char: "Súng: M1887",
+    date: "11/11/2026",
+    img: COVERG16,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/ZesY7",
+      "FF Max": "https://link4m.net/yJJXZDR4"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/qu6hO8Bs",
+      "FF Max": "https://link4m.net/TIGIfiW"
+    }
+  },
+  {
+    id: "m1887-shiba-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M1887 Phong Xà Thành M1887 Shiba",
+    char: "Súng: M1887",
+    date: "11/11/2026",
+    img: COVERG17,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.org/SEGDH",
+      "FF Max": "https://link4m.org/Qat7Ok"
+    },
+    ios: {
+      "FF Thường": "https://link4m.org/EERo0wd3",
+      "FF Max": "https://link4m.org/mCdJ1u"
+    }
+  },
+  {
+    id: "m1014-shiba-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M1014 Phong Xà Thành M1014 Shiba",
+    char: "Súng: M1014",
+    date: "09/11/2026",
+    img: COVERG15,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/DIX9V",
+      "FF Max": "https://link4m.org/gbQ9c"
+    },
+    ios: {
+      "FF Thường": "https://link4m.org/FVK70",
+      "FF Max": "https://link4m.org/EUkNkXn1"
+    }
+  },
+  {
+    id: "aug-nangcap-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - AUG Phong Xà Thành AUG Nâng Cấp Lv7 Full Hiệu Ứng",
+    char: "Súng: AUG",
+    date: "08/11/2026",
+    img: COVERG14,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.org/isaUU",
+      "FF Max": "https://link4m.net/pFk8HJcF"
+    },
+    ios: {
+      "FF Thường": "https://link4m.org/9LNh9lr",
+      "FF Max": "https://link4m.net/RbAzFiMx"
+    }
+  },
+  {
+    id: "m1887-phonglon-ob55",
+    cat: "sung",
+    note: "Link No Vượt",
+    title: "MOD SKIN FF OB55 - M1887 Phong Xà Thành M1887 Phóng Lợn",
+    char: "Súng: M1887",
+    date: "04/11/2026",
+    img: COVERG13,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://www.mediafire.com/file/216187wpdum6du0/VQUANG_M1887_PH%25C3%2593NG_L%25E1%25BB%25A2N_ADR_FFTH_OB55.zip/file",
+      "FF Max": "https://www.mediafire.com/file/5elxailnz4n48m6/VQUANG_M1887_PH%25C3%2593NG_L%25E1%25BB%25A2N_ADR_FFM_OB55.zip/file"
+    },
+    ios: {
+      "FF Thường": "https://www.mediafire.com/file/e4cma2ai6ieu714/VQUANG_M1887_PH%25C3%2593NG_L%25E1%25BB%25A2N_IOS_FFTHOB55.zip/file",
+      "FF Max": "https://www.mediafire.com/file/857t3qlw15ma8ok/VQUANG_M1887_PH%25C3%2593NG_L%25E1%25BB%25A2N_IOS_FFMAX_OB55.zip/file"
+    }
+  },
+  {
+    id: "awm-hoabang-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - AWM Ma Ảnh Cực Quang Thành AWM Hỏa Băng Full Hiệu Ứng",
+    char: "Súng: AWM",
+    date: "31/10/2026",
+    img: COVERG12,
+    wide: true,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.org/TB1cm",
+      "FF Max": "https://link4m.net/1DO3G"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/adiyUbnk",
+      "FF Max": "https://link4m.org/5AAyy"
+    }
+  },
+  {
+    id: "m590-metalgarurumon-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M590 Phong Xà Thành M590 Sức Mạnh MetalGarurumon Full Hiệu Ứng Có Icon",
+    char: "Súng: M590",
+    date: "31/10/2026",
+    img: COVERG11,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/Av5R2qG",
+      "FF Max": "https://link4m.net/qIVnd"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/nNglJsKh",
+      "FF Max": "https://link4m.net/Jl1pitDC"
+    }
+  },
+  {
+    id: "ak-rongxanh-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - AK Thợ Săn Đầu Lâu Thành Skin AK Rồng Xanh Lv7 Full Hiệu Ứng",
+    char: "Súng: AK47",
+    date: "30/10/2026",
+    img: COVERG10,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.org/Qv5W5EB",
+      "FF Max": "https://link4m.org/863hDe"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/WJkbar",
+      "FF Max": "https://link4m.org/nF2XOoH"
+    }
+  },
+  {
+    id: "parafal-cuonglong-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - Parafal Phong Xà Thành Parafal Cuồng Long Lv7 Full Hiệu Ứng VIP",
+    char: "Súng: Parafal",
+    date: "29/10/2026",
+    img: COVERG9,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/8JwT0",
+      "FF Max": "https://link4m.net/X9vVA5"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/ZMWNN",
+      "FF Max": "https://link4m.net/u6c1C4"
+    }
+  },
+  {
+    id: "m60-satthan-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M60 Phong Xà Thành M60 Sát Thần Săn Mộng Lv7 Full Hiệu Ứng VIP",
+    char: "Súng: M60",
+    date: "28/10/2026",
+    img: COVERG8,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.org/LqBhLF",
+      "FF Max": "https://link4m.net/6GWFRY"
+    },
+    ios: {
+      "FF Thường": "https://link4m.org/fzrhF",
+      "FF Max": "https://link4m.org/zEKLe"
+    }
+  },
+  {
+    id: "trogon-daoquansu-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - Trogon Phong Xà Thành Trogon Đảo Quân Sự VIP Full Hiệu Ứng",
+    char: "Súng: Trogon",
+    date: "28/10/2026",
+    img: COVERG7,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.org/ZzDyMY",
+      "FF Max": "https://link4m.net/RYwlM"
+    },
+    ios: {
+      "FF Thường": "https://link4m.org/2qYMYa",
+      "FF Max": "https://link4m.org/kCcgyJiY"
+    }
+  },
+  {
+    id: "mp5-lv7-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - MP5 Chinh Phục Thành MP5 Lv7 VIP Full Hiệu Ứng",
+    char: "Súng: MP5",
+    date: "27/10/2026",
+    img: COVERG6,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/clgnR",
+      "FF Max": "https://link4m.org/tkGKj8"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/89dzXT",
+      "FF Max": "https://link4m.net/1R9vDR8"
+    }
+  },
+  {
+    id: "mp40-mangxa-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - MP40 Hoàng Kim Thành MP40 Mãng Xà Lv7 Full Hiệu Ứng VIP",
+    char: "Súng: MP40",
+    date: "26/10/2026",
+    img: COVERG5,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4sub.com/5DfQiLSiOq",
+      "FF Max": "https://link4sub.com/MEZecyOMeG"
+    },
+    ios: {
+      "FF Thường": "https://link4sub.com/ebGnCTAtIV",
+      "FF Max": "https://link4sub.com/iSf1J7xi15"
+    }
+  },
+  {
+    id: "m1887-vutru-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M1887 Phong Xà Thành M1887 Vũ Trụ Hủy Diệt",
+    char: "Súng: M1887",
+    date: "26/10/2026",
+    img: COVERG4,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/vqUOJ4",
+      "FF Max": "https://link4m.net/9nesPNG"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/DjcP4V",
+      "FF Max": "https://link4m.net/1ngcW"
+    }
+  },
+  {
+    id: "m1887-cat-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M1887 Phong Xà Thành M1887 Vương Quốc Cát Full Hiệu Ứng VIP",
+    char: "Súng: M1887",
+    date: "25/10/2026",
+    img: COVERG3,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4sub.com/6Gn1rGGKMd",
+      "FF Max": "https://link4sub.com/o4NTE36obl"
+    },
+    ios: {
+      "FF Thường": "https://link4sub.com/wJRX8srIoI",
+      "FF Max": "https://link4sub.com/7TfpxHU2q7"
+    }
+  },
+  {
+    id: "ump-m1014-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - UMP Bậc Thầy Sáng Tạo Thành M1014 Huyết Hỏa",
+    char: "Súng: UMP, M1014",
+    date: "25/10/2026",
+    img: COVERG2,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/3klk5",
+      "FF Max": "https://link4m.net/ykIyW"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/2q75vSqG",
+      "FF Max": "https://link4m.org/ZYaoxuqD"
+    }
+  },
+  {
+    id: "m1887-ob55",
+    cat: "sung",
+    title: "MOD SKIN FF OB55 - M1887 Phong Xà Thành M1887 Hỏa Lộ",
+    char: "Súng: M1887",
+    date: "25/10/2026",
+    img: COVERG,
+    versions: ["FF Thường", "FF Max"],
+    android: {
+      "FF Thường": "https://link4m.net/F4lmsadO",
+      "FF Max": "https://link4m.org/KKKwfd4"
+    },
+    ios: {
+      "FF Thường": "https://link4m.net/oYhrP1o",
+      "FF Max": "https://link4m.org/t9U4ke"
+    }
+  },
+];
+const NOTICE = "Link No Vượt";
+
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const thumb = p => `<img class="cover" loading="lazy" decoding="async" src="${p.img || COVER}" style="object-position:${p.pos || "center"}${p.wide ? ";aspect-ratio:auto" : ""}" alt="${esc(p.title)}">`;
+
+function landing(){
+  app.innerHTML = `<section class="home-panel"><h1>Chào mừng đến với VanQuang</h1><p>Kho chia sẻ MOD ĐỒ và MOD SÚNG Free Fire</p><a class="home-link" href="#/mod-do">Khám phá MOD ĐỒ</a></section>
+    <figure class="home-notice"><img src="img-thongbao.jpg" alt="Thông báo: FFVN đã ra mắt, FFTH và FFMAX sẽ bị xóa vào ngày 1/1/2027. Cách cài: Android đổi đường dẫn FFT cũ sang com.garena.ffvn, iOS dùng tài nguyên FFT cũ. Các mod cũ ADR/iOS lấy của FFTH để mod sang FFVN."></figure>`;
+}
+
+function home(){
+  app.innerHTML = `<h1 class="sec">MOD ĐỒ</h1><div class="note">${esc(NOTICE)}</div>` + POSTS.filter(p => !p.cat).map(p => `
+    <a class="card" href="#/${p.id}">
+      ${thumb(p)}
+      <h2>${esc(p.title)}</h2><p>${esc(p.char)}</p>
+    </a>`).join("");
+}
+
+function detail(p){
+  const group = (name, icon, links) => `<div class="box"><h3>${icon} ${name}</h3>` +
+    p.versions.map(v => `<a class="dl" href="${esc(links[v] || "#")}" target="_blank" rel="noopener">${esc(v)}</a>`).join("") + `</div>`;
+  app.innerHTML = `<article class="post">
+    <h1>${esc(p.title)}</h1>
+    ${thumb(p)}
+    <div class="date">Ngày đăng: ${esc(p.date)}</div>
+    <ul class="info"><li>🎭 ${esc(p.char)}</li><li>📦 Phiên bản hỗ trợ: ${esc(p.versions.join(", "))}</li></ul><div class="note">${p.note || (p.cat === "sung" ? "Link Vượt 1 Lần" : "Link No Vượt")}</div>
+    ${group("Android","📱",p.android)}${group("iOS","🍎",p.ios)}
+    <a class="back" href="${p.cat === "sung" ? "#/sung" : "#/mod-do"}">${p.cat === "sung" ? "← Quay lại MOD SÚNG" : "← Quay lại MOD ĐỒ"}</a></article>`;
+}
+
+function guns(){
+  const list = POSTS.filter(p => p.cat === "sung");
+  app.innerHTML = `<h1 class="sec">MOD SÚNG</h1><div class="note">Link Vượt 1 Lần</div>` + (list.length ? list.map(p => `
+    <a class="card" href="#/${p.id}">
+      ${thumb(p)}
+      <h2>${esc(p.title)}</h2><p>${esc(p.char)}</p>
+    </a>`).join("") : `<p class="hint">Chưa có bài.</p>`) + `<a class="back" href="#/mod-do">← Quay lại MOD ĐỒ</a>`;
+}
+
+/* ===== BÁO LỖI =====
+   DB_URL: để trống thì số lượt báo lỗi chỉ lưu trên từng máy.
+   Dán link Firebase vào đây (ví dụ "https://ten-du-an-default-rtdb.firebaseio.com")
+   thì số lượt báo lỗi sẽ chung cho tất cả mọi người. */
+const DB_URL = "https://vanquang-77dbc-default-rtdb.asia-southeast1.firebasedatabase.app";
+const ZALO = "https://zaloapp.com/qr/p/p8pa8dlri07z?src=qr";
+const ISSUES = [
+  { k: "link", t: "Link bị hỏng, lỗi và không cài được" },
+  { k: "skin", t: "Mod nhưng vào game không hiện skin" },
+  { k: "mat", t: "Mod bị mất đồ và hiệu ứng trong trận" }
+];
+const store = {
+  async count(k) {
+    if (DB_URL) {
+      try {
+        const r = await fetch(`${DB_URL}/reports/${k}.json?shallow=true`);
+        const d = await r.json();
+        return d ? Object.keys(d).length : 0;
+      } catch (e) { return null; }
+    }
+    try { return +localStorage.getItem("bl_n_" + k) || 0; } catch (e) { return 0; }
+  },
+  async add(k) {
+    if (DB_URL) {
+      try { await fetch(`${DB_URL}/reports/${k}.json`, { method: "POST", headers: { "Content-Type": "text/plain" }, body: String(Date.now()) }); } catch (e) {}
+      return;
+    }
+    try { localStorage.setItem("bl_n_" + k, String((+localStorage.getItem("bl_n_" + k) || 0) + 1)); } catch (e) {}
+  }
+};
+const showCount = async k => {
+  const el = document.getElementById("n-" + k);
+  if (!el) return;
+  const n = await store.count(k);
+  el.textContent = n === null ? "–" : n + " lượt";
+};
+
+function report(){
+  app.innerHTML = `<h1 class="sec">Báo lỗi</h1>
+    <p class="ask">Bạn đang gặp vấn đề gì?</p>
+    ${ISSUES.map(i => `<button type="button" class="issue" data-k="${i.k}"><span>${esc(i.t)}</span><b id="n-${i.k}">…</b></button>`).join("")}
+    <div id="thanks" class="note" hidden>Cảm ơn bạn đã báo lỗi, chúng tôi sẽ sớm fix lỗi này.</div>
+    <div class="box contact"><h3>Liên hệ admin VanQuang qua</h3>
+      <a class="zalo" href="${ZALO}" aria-label="Zalo của admin VanQuang">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#0068ff"/><text x="24" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="16" fill="#fff">Zalo</text></svg>
+        <span>Zalo</span></a></div>
+    <a class="back" href="#/mod-do">← Quay lại MOD ĐỒ</a>`;
+  ISSUES.forEach(i => showCount(i.k));
+  app.querySelectorAll(".issue").forEach(b => b.addEventListener("click", async () => {
+    const k = b.dataset.k;
+    let last = 0;
+    try { last = +localStorage.getItem("bl_t_" + k) || 0; } catch (e) {}
+    if (Date.now() - last > 864e5) {   /* mỗi máy chỉ tính 1 lượt/mục mỗi 24 giờ */
+      await store.add(k);
+      try { localStorage.setItem("bl_t_" + k, String(Date.now())); } catch (e) {}
+      await showCount(k);
+    }
+    const t = document.getElementById("thanks");
+    t.hidden = false;
+    t.scrollIntoView({ behavior: "smooth", block: "center" });
+  }));
+}
+
+function box(){
+  app.innerHTML = `<h1 class="sec">BOX SHARE MOD</h1>
+    <p class="ask">Chọn nơi bạn muốn tham gia:</p>
+    <a class="join" href="https://t.me/vanquangsharemod"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#229ed9"/><path d="M37 13.5L10.5 23.7l6.8 2.4 2.6 8.3 3.8-4.4 6.8 5 6.5-21.5z" fill="#fff"/><path d="M17.3 26.1l14.8-9.1-11 11.2-.4 5.8z" fill="#229ed9" opacity=".35"/></svg><div><b>Box Telegram</b><span>Tham gia nhóm trên Telegram</span></div></a>
+    <a class="join" href="https://zalo.me/g/v0jq6qkk6j9ooxmqdk2m"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#0068ff"/><text x="24" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="16" fill="#fff">Zalo</text></svg><div><b>Box Zalo</b><span>Tham gia nhóm trên Zalo</span></div></a>
+    <a class="back" href="#/trang-chu">← Quay lại TRANG CHỦ</a>`;
+}
+
+function route(){
+  const id = location.hash.replace("#/", "");
+  const p = POSTS.find(x => x.id === id);
+  id === "box-share" ? box() : id === "sung" ? guns() : id === "bao-loi" ? report() : id === "mod-do" ? home() : p ? detail(p) : landing();
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+
+/* Chuyển giao diện sáng/tối và lưu lựa chọn trên thiết bị */
+const themeBtn = document.getElementById("themeBtn");
+const applyTheme = theme => {
+  document.documentElement.setAttribute("data-theme", theme);
+  themeBtn.textContent = theme === "dark" ? "🌙" : "☀️";
+  themeBtn.setAttribute("aria-label", theme === "dark" ? "Chuyển sang chế độ sáng" : "Chuyển sang chế độ tối");
+  try { localStorage.setItem("vq_theme", theme); } catch (e) {}
+};
+let savedTheme = "light";
+try { savedTheme = localStorage.getItem("vq_theme") || "light"; } catch (e) {}
+applyTheme(savedTheme === "dark" ? "dark" : "light");
+themeBtn.addEventListener("click", () => applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
+
+/* Menu 3 gạch: Báo lỗi */
+const menuBtn = document.getElementById("menuBtn");
+const menuDrop = document.getElementById("menuDrop");
+const setMenu = open => { menuDrop.hidden = !open; menuBtn.setAttribute("aria-expanded", String(open)); };
+menuBtn.addEventListener("click", e => { e.stopPropagation(); setMenu(menuDrop.hidden); });
+document.addEventListener("click", e => { if (!menuDrop.contains(e.target)) setMenu(false); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") setMenu(false); });
+window.addEventListener("hashchange", () => setMenu(false));
+
+/* Gỡ bản app cũ (nếu máy khách đã cài) để không bị lỗi khi các file app đã xóa */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister())).catch(() => {});
+  if (window.caches) caches.keys().then(ks => ks.forEach(k => caches.delete(k))).catch(() => {});
+}
+route();
+</script>
+</body>
+</html>
